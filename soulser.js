@@ -98,9 +98,18 @@ function create ()
     });
 
 
+    // Adds player with platforms collision
     this.physics.add.collider(player, platforms);
 
+
     cursors = this.input.keyboard.createCursorKeys(); // Cursor goes in create, movement definition goes in update
+    wasd = {
+        up: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
+        down: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
+        left: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
+        right: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
+        sprint: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT)
+    };
 }
 
 function update ()
@@ -117,6 +126,8 @@ function update ()
 
 
 
+
+
 function playerMovement()
 {
     var horizontalMove = false;
@@ -126,11 +137,11 @@ function playerMovement()
     player.setVelocity(0);
 
     // Determine velocity when moving diagonally
-    if (cursors.right.isDown || cursors.left.isDown)
+    if (cursors.right.isDown || cursors.left.isDown || wasd.left.isDown || wasd.right.isDown)
     {
         horizontalMove = true;
     }
-    if (cursors.up.isDown || cursors.down.isDown)
+    if (cursors.up.isDown || cursors.down.isDown || wasd.up.isDown || wasd.down.isDown)
     {
         verticalMove = true;
     }
@@ -139,20 +150,26 @@ function playerMovement()
         moveSpeed = playerSpeed * Math.cos(0.25 * Math.PI);
     }
 
+    // Determine if sprinting
+    if (wasd.sprint.isDown)
+    {
+        moveSpeed *= 2;
+    }
+
     // Determine vertical movementspeed
-    if (cursors.up.isDown){
+    if (cursors.up.isDown || wasd.up.isDown){
         player.setVelocityY(-moveSpeed);
     }
-    else if (cursors.down.isDown){
+    else if (cursors.down.isDown || wasd.down.isDown){
         player.setVelocityY(moveSpeed);
     }
 
     // Determine horizontal movementspeed
-    if (cursors.right.isDown){
+    if (cursors.right.isDown || wasd.right.isDown){
         player.setVelocityX(moveSpeed);
         player.anims.play('right', true);
     }
-    else if (cursors.left.isDown){
+    else if (cursors.left.isDown || wasd.left.isDown){
         player.setVelocityX(-moveSpeed);
         player.anims.play('left', true);
     }
