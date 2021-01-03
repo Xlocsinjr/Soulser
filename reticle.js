@@ -21,36 +21,50 @@ class Reticle extends Phaser.Physics.Arcade.Sprite{
         this.playerAnchor = spriteAnchor;
     }
 
+    limitReticleDistance()
+    {
+        // Ensures reticle cannot be moved further than dist(radius) from player
+        var distBetween = Phaser.Math.Distance.Between(this.playerAnchor.x, this.playerAnchor.y, this.x, this.y);
+        if (distBetween > RETICLE_MAX_DISTANCE)
+        {
+            // Place reticle on perimeter of circle on line intersecting player & reticle
+            var scale = distBetween/RETICLE_MAX_DISTANCE;
+
+            this.x = this.playerAnchor.x + (this.deltaX)/scale;
+            this.y = this.playerAnchor.y + (this.deltaY)/scale;
+        }
+
+    }
+
     reticleMovement()
     {
         // Makes the reticle move along with the player
         this.x = this.playerAnchor.x + this.deltaX;
         this.y = this.playerAnchor.y + this.deltaY;
+        this.limitReticleDistance();
     }
 
-    reticlePointing(scene, pointer)
+    
+
+    reticlePointing(pointer)
     // Defines what happens on mouse pointer move
-    {
-        if (scene.input.mouse.locked)
-        {
-            // Move reticle with mouse
-            this.x += pointer.movementX;
-            this.y += pointer.movementY;
+    {   
+        // Makes the reticle move along with the player 
+        // NOTE: somehow can't call reticleMovement here
+        // this.x = this.playerAnchor.x + this.deltaX;
+        // this.y = this.playerAnchor.y + this.deltaY;
+        this.reticleMovement();
 
-            // Update deltas when the reticle moves
-            this.deltaX = this.x-this.playerAnchor.x;
-            this.deltaY = this.y-this.playerAnchor.y;
+        // Move reticle with mouse
+        this.x += pointer.movementX;
+        this.y += pointer.movementY;
 
-            // Ensures reticle cannot be moved further than dist(radius) from player
-            var distBetween = Phaser.Math.Distance.Between(this.playerAnchor.x, this.playerAnchor.y, this.x, this.y);
-            if (distBetween > RETICLE_MAX_DISTANCE)
-            {
-                // Place reticle on perimeter of circle on line intersecting player & reticle
-                var scale = distBetween/RETICLE_MAX_DISTANCE;
+        this.limitReticleDistance()
+        
+        // Update deltas when the reticle moves
+        this.deltaX = this.x-this.playerAnchor.x;
+        this.deltaY = this.y-this.playerAnchor.y;
 
-                this.x = this.playerAnchor.x + (this.x-this.playerAnchor.x)/scale;
-                this.y = this.playerAnchor.y + (this.y-this.playerAnchor.y)/scale;
-            }
-        }
+        
     }
 }

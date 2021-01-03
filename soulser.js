@@ -132,11 +132,16 @@ function create ()
     // defines reticle properties
     reticle.setOrigin(0.5, 0.5).setDisplaySize(25, 25);
 
+
+
     // Move reticle upon locked pointer move
     this.input.on('pointermove', function (pointer) {
         if (this.input.mouse.locked)
         {
-            reticle.reticlePointing(this, pointer);
+            if (this.input.mouse.locked)
+            {
+                reticle.reticlePointing(pointer);
+            }
         }
     }, this);
 }
@@ -162,14 +167,4 @@ function update ()
     
     
     
-}
-
-
-
-
-
-function reticleMovement()
-{
-    reticle.setVelocityX(player.velocityX);
-    reticle.setVelocityY(player.velocityY);
 }
