@@ -1,11 +1,9 @@
-class Player {
-    static PLAYERSPEED = 160;
-    static MAX_HEALTH_DEFAULT = 20000;
-    static MAX_STAMINA_DEFAULT = 20000;
-    static MAX_MAGICPOINTS_DEFAULT = 20000;
+const PLAYERSPEED = 150;
+const PLAYER_MAX_HEALTH_DEFAULT = 20000;
+const PLAYER_MAX_STAMINA_DEFAULT = 20000;
+const PLAYER_MAX_MAGICPOINTS_DEFAULT = 20000;
 
-    playerSprite;
-
+class Player extends Phaser.Physics.Arcade.Sprite{
     maxHealth;
     health;
     maxStamina;
@@ -17,21 +15,28 @@ class Player {
     isDodging;
     isSprinting;
 
-    constructor (sprite){
-        // assigns a sprite to the player
-        this.playerSprite = sprite;
+    constructor (scene, x, y, texture){
+        super(scene, x, y, texture);
+
+        scene.add.existing(this);
+        scene.physics.add.existing(this);
 
         // Assigns default values to attributes on creation
-        this.maxHealth = MAX_HEALTH_DEFAULT;
-        this.health = MAX_HEALTH_DEFAULT;
-        this.maxStamina = MAX_STAMINA_DEFAULT;
-        this.stamina = MAX_STAMINA_DEFAULT;
-        this.maxMagicpoints = MAX_MAGICPOINTS_DEFAULT;
-        this.magicpoints = MAX_MAGICPOINTS_DEFAULT;
+        this.maxHealth = PLAYER_MAX_HEALTH_DEFAULT;
+        this.health = PLAYER_MAX_HEALTH_DEFAULT;
+        this.maxStamina = PLAYER_MAX_STAMINA_DEFAULT;
+        this.stamina = PLAYER_MAX_STAMINA_DEFAULT;
+        this.maxMagicpoints = PLAYER_MAX_MAGICPOINTS_DEFAULT;
+        this.magicpoints = PLAYER_MAX_MAGICPOINTS_DEFAULT;
         this.movementSpeed = 0;
 
         this.isDodging = false;
         this.isSprinting = false;
+
+        //player.body.setGravityY(300)     to give gravity to a sprite
+
+        //player.setBounce(0.2);        to make sprite bounce
+        this.setCollideWorldBounds(true);
 
 
     }
@@ -42,7 +47,7 @@ class Player {
     var verticalMove = false;
     this.movementspeed = PLAYERSPEED;
 
-    this.playerSprite.setVelocity(0);
+    this.setVelocity(0);
 
     // Determine velocity when moving diagonally
     if (cursors.right.isDown || cursors.left.isDown || wasd.left.isDown || wasd.right.isDown)
@@ -71,23 +76,23 @@ class Player {
 
     // Determine vertical movementspeed
     if (cursors.up.isDown || wasd.up.isDown){
-        this.playerSprite.setVelocityY(-this.movementspeed);
+        this.setVelocityY(-this.movementspeed);
     }
     else if (cursors.down.isDown || wasd.down.isDown){
-        this.playerSprite.setVelocityY(this.movementspeed);
+        this.setVelocityY(this.movementspeed);
     }
 
     // Determine horizontal movementspeed
     if (cursors.right.isDown || wasd.right.isDown){
-        this.playerSprite.setVelocityX(this.movementspeed);
-        this.playerSprite.anims.play('right', true);
+        this.setVelocityX(this.movementspeed);
+        this.anims.play('right', true);
     }
     else if (cursors.left.isDown || wasd.left.isDown){
-        this.playerSprite.setVelocityX(-this.movementspeed);
-        this.playerSprite.anims.play('left', true);
+        this.setVelocityX(-this.movementspeed);
+        this.anims.play('left', true);
     }
     else{
-        this.playerSprite.anims.play('turn', true);
+        this.anims.play('turn', true);
     }
 }
 }

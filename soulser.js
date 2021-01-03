@@ -69,12 +69,8 @@ function create ()
 
     // CREATES THE PLAYER =====================================================================================
     // creates sprite called player
-    player = this.physics.add.sprite(100, 450, 'dude');
-
-    //player.body.setGravityY(300)     to give gravity to a sprite
-
-    //player.setBounce(0.2);        to make sprite bounce
-    player.setCollideWorldBounds(true);
+    //player = this.physics.add.sprite(new Player(100, 450, 'dude'));
+    player = new Player(this, 100, 450, 'dude');
 
     // defines animations of player
     this.anims.create({
@@ -119,61 +115,8 @@ function update ()
         return;
     }
     
-    playerMovement();
+    player.playerMovement();
     
     
 }
 
-
-
-
-
-function playerMovement()
-{
-    var horizontalMove = false;
-    var verticalMove = false;
-    var moveSpeed = playerSpeed
-
-    player.setVelocity(0);
-
-    // Determine velocity when moving diagonally
-    if (cursors.right.isDown || cursors.left.isDown || wasd.left.isDown || wasd.right.isDown)
-    {
-        horizontalMove = true;
-    }
-    if (cursors.up.isDown || cursors.down.isDown || wasd.up.isDown || wasd.down.isDown)
-    {
-        verticalMove = true;
-    }
-    if (horizontalMove && verticalMove)
-    {
-        moveSpeed = playerSpeed * Math.cos(0.25 * Math.PI);
-    }
-
-    // Determine if sprinting
-    if (wasd.sprint.isDown)
-    {
-        moveSpeed *= 2;
-    }
-
-    // Determine vertical movementspeed
-    if (cursors.up.isDown || wasd.up.isDown){
-        player.setVelocityY(-moveSpeed);
-    }
-    else if (cursors.down.isDown || wasd.down.isDown){
-        player.setVelocityY(moveSpeed);
-    }
-
-    // Determine horizontal movementspeed
-    if (cursors.right.isDown || wasd.right.isDown){
-        player.setVelocityX(moveSpeed);
-        player.anims.play('right', true);
-    }
-    else if (cursors.left.isDown || wasd.left.isDown){
-        player.setVelocityX(-moveSpeed);
-        player.anims.play('left', true);
-    }
-    else{
-        player.anims.play('turn', true);
-    }
-}
