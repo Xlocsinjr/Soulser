@@ -100,6 +100,11 @@ function create ()
     // Adds player with platforms collision
     this.physics.add.collider(player, platforms);
 
+    // =========================== ADDS DUMMY =======================================================
+    dummy = new Dummy(this, 840, 360, 'dude');
+    // dummy animation
+    dummy.anims.play('turn', true);
+
 
     // =========================== DEFINES CONTROLS ==================================================
     cursors = this.input.keyboard.createCursorKeys(); // Cursor goes in create, movement definition goes in update
@@ -162,8 +167,26 @@ function update ()
 
     // Update reticle movement
     reticle.reticleMovement();
+
     
     
     
     
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+function hitDetection()
+{
+
 }
