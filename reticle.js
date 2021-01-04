@@ -41,7 +41,6 @@ class Reticle extends Phaser.Physics.Arcade.Sprite{
         // Makes the reticle move along with the player
         this.x = this.playerAnchor.x + this.deltaX;
         this.y = this.playerAnchor.y + this.deltaY;
-        this.limitReticleDistance();
     }
 
     
@@ -49,12 +48,6 @@ class Reticle extends Phaser.Physics.Arcade.Sprite{
     reticlePointing(pointer)
     // Defines what happens on mouse pointer move
     {   
-        // Makes the reticle move along with the player 
-        // NOTE: somehow can't call reticleMovement here
-        // this.x = this.playerAnchor.x + this.deltaX;
-        // this.y = this.playerAnchor.y + this.deltaY;
-        this.reticleMovement();
-
         // Move reticle with mouse
         this.x += pointer.movementX;
         this.y += pointer.movementY;
